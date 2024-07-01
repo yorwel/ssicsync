@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # create ssic denormalized fact table
-ssic_detailed_def_filepath = "ssic2020-detailed-definitions.xlsx"
-ssic_alpha_index_filepath = "ssic2020-alphabetical-index.xlsx"
+ssic_detailed_def_filepath = "dataSources\DoS\ssic2020-detailed-definitions.xlsx"
+ssic_alpha_index_filepath = "dataSources\DoS\ssic2020-alphabetical-index.xlsx"
 
 df_detailed_def = pd.read_excel(ssic_detailed_def_filepath, skiprows=4)
 
