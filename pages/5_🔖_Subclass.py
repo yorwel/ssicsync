@@ -8,8 +8,8 @@ import seaborn as sns
 ssic_detailed_def_filepath = "dataSources/DoS/ssic2020-detailed-definitions.xlsx"
 ssic_alpha_index_filepath = "dataSources/DoS/ssic2020-alphabetical-index.xlsx"
 
-df_detailed_def = pd.read_excel(ssic_detailed_def_filename, skiprows=4)
-df_alpha_index = pd.read_excel(ssic_alpha_index_filename, dtype=str, skiprows=5)
+df_detailed_def = pd.read_excel(ssic_detailed_def_filepath, skiprows=4)
+df_alpha_index = pd.read_excel(ssic_alpha_index_filepath, dtype=str, skiprows=5)
 
 df_alpha_index = df_alpha_index.drop(df_alpha_index.columns[2], axis=1).dropna().rename(columns={'SSIC 2020': 'SSIC 2020','SSIC 2020 Alphabetical Index Description': 'Detailed Definitions'})
 df_concat = pd.concat([df_detailed_def, df_alpha_index])
