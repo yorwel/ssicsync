@@ -39,7 +39,7 @@ st.balloons()
 
 st.sidebar.success("Explore our pages above ☝️")
 
-st.image('background.jpg', caption='This is an image caption', output_format='JPEG', use_column_width=True)
+st.image('image/background.jpg', caption='This is an image caption', output_format='JPEG', use_column_width=True)
 
 st.write("## Welcome to ssicsync! 👋")
 

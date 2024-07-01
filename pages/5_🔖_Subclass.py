@@ -5,8 +5,8 @@ from sklearn import datasets
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-ssic_detailed_def_filepath = "dataSources\DoS\ssic2020-detailed-definitions.xlsx"
-ssic_alpha_index_filepath = "dataSources\DoS\ssic2020-alphabetical-index.xlsx"
+ssic_detailed_def_filepath = "dataSources/DoS/ssic2020-detailed-definitions.xlsx"
+ssic_alpha_index_filepath = "dataSources/DoS/ssic2020-alphabetical-index.xlsx"
 
 df_detailed_def = pd.read_excel(ssic_detailed_def_filename, skiprows=4)
 df_alpha_index = pd.read_excel(ssic_alpha_index_filename, dtype=str, skiprows=5)
