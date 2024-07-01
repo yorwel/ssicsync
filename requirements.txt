@@ -1,0 +1,11 @@
+streamlit==1.27.2
+scipy==1.13.1
+pandas==2.2.2
+setuptools==65.5.0
+scikit-learn==1.5.0
+tensorflow==2.16.1
+numpy==1.26.4
+matplotlib==3.9.0
+seaborn==0.13.2
+transformers
+openpyxl==3.1.4
