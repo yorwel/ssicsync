@@ -1,2 +1,0 @@
-def validatingClassificationModel():
-    return
