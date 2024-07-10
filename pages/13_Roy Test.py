@@ -148,7 +148,7 @@ def predict_text(text, top_n=15):
 
 # Validation Data
 
-vdf_filepath = r"dataSources\DoS\data validation.xlsx" 
+vdf_filepath = r"dataSources/DoS/data validation.xlsx" 
 vdf = pd.read_excel(vdf_filepath, dtype = str)
 
 # Create an empty list to store the predictions
