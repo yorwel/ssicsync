@@ -215,11 +215,11 @@ Class_N = st.text_input('Top N Class:', '')
 Subclass_N = st.text_input('Top N Subclass:', '')
 
 # Set default values if inputs are blank
-Section_N = int(Section_N) if Section_N else 10
-Division_N = int(Division_N) if Division_N else 10
-Group_N = int(Group_N) if Group_N else 10
-Class_N = int(Class_N) if Class_N else 10
-Subclass_N = int(Subclass_N) if Subclass_N else 10
+Section_N = int(Section_N) if Section_N else 3
+Division_N = int(Division_N) if Division_N else 3
+Group_N = int(Group_N) if Group_N else 3
+Class_N = int(Class_N) if Class_N else 3
+Subclass_N = int(Subclass_N) if Subclass_N else 3
 
 Section_prediction_df['Within Top N (Section)'] = Section_prediction_df.apply(check_alpha_in_list, axis=1, N=Section_N, m1 = 'm_Section', m2 = 'm_Section2', p = 'p_Section')
 Division_prediction_df['Within Top N (Division)'] = Division_prediction_df.apply(check_alpha_in_list, axis=1, N=Division_N, m1 = 'm_Division', m2 = 'm_Division2', p = 'p_Division')
