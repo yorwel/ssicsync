@@ -207,13 +207,25 @@ def check_alpha_in_list(row, N, m1, m2, p):
         return 'Y'
     else:
         return 'N'
-    
 
-Section_prediction_df['Within Top N (Section)'] = Section_prediction_df.apply(check_alpha_in_list, axis=1, N=10, m1 = 'm_Section', m2 = 'm_Section2', p = 'p_Section')
-Division_prediction_df['Within Top N (Division)'] = Division_prediction_df.apply(check_alpha_in_list, axis=1, N=10, m1 = 'm_Division', m2 = 'm_Division2', p = 'p_Division')
-Group_prediction_df['Within Top N (Group)'] = Group_prediction_df.apply(check_alpha_in_list, axis=1, N=10, m1 = 'm_Group', m2 = 'm_Group2', p = 'p_Group')
-Class_prediction_df['Within Top N (Class)'] = Class_prediction_df.apply(check_alpha_in_list, axis=1, N=5, m1 = 'm_Class', m2 = 'm_Class2', p = 'p_Class')
-Subclass_prediction_df['Within Top N (Sub-class)'] = Subclass_prediction_df.apply(check_alpha_in_list, axis=1, N=5, m1 = 'm_Sub-class', m2 = 'm_Sub-class2', p = 'p_Sub-class')
+Section_N = st.text_input('Top N Section:', '')
+Division_N = st.text_input('Top N Division:', '')
+Group_N = st.text_input('Top N Group:', '')
+Class_N = st.text_input('Top N Class:', '')
+Subclass_N = st.text_input('Top N Subclass:', '')
+
+# Set default values if inputs are blank
+Section_N = int(Section_N) if Section_N else 10
+Division_N = int(Division_N) if Division_N else 10
+Group_N = int(Group_N) if Group_N else 10
+Class_N = int(Class_N) if Class_N else 10
+Subclass_N = int(Subclass_N) if Subclass_N else 10
+
+Section_prediction_df['Within Top N (Section)'] = Section_prediction_df.apply(check_alpha_in_list, axis=1, N=Section_N, m1 = 'm_Section', m2 = 'm_Section2', p = 'p_Section')
+Division_prediction_df['Within Top N (Division)'] = Division_prediction_df.apply(check_alpha_in_list, axis=1, N=Division_N, m1 = 'm_Division', m2 = 'm_Division2', p = 'p_Division')
+Group_prediction_df['Within Top N (Group)'] = Group_prediction_df.apply(check_alpha_in_list, axis=1, N=Group_N, m1 = 'm_Group', m2 = 'm_Group2', p = 'p_Group')
+Class_prediction_df['Within Top N (Class)'] = Class_prediction_df.apply(check_alpha_in_list, axis=1, N=Class_N, m1 = 'm_Class', m2 = 'm_Class2', p = 'p_Class')
+Subclass_prediction_df['Within Top N (Sub-class)'] = Subclass_prediction_df.apply(check_alpha_in_list, axis=1, N=Subclass_N, m1 = 'm_Sub-class', m2 = 'm_Sub-class2', p = 'p_Sub-class')
 
 dfs = [
     Section_prediction_df,
@@ -247,8 +259,6 @@ for column in filtered_df.columns:
 
 # Create a DataFrame from percentages
 percentages_df = pd.DataFrame(percentages).round(2)
-
-# percentages_df
 
 import matplotlib.pyplot as plt
 
