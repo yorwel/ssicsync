@@ -279,6 +279,10 @@ ax.set_ylabel('Percentage')
 ax.set_ylim(0, 100)
 ax.legend()
 
+# Adding data labels
+ax.bar_label(bars1, fmt='%.2f%%')
+ax.bar_label(bars2, fmt='%.2f%%', label_type='center')
+
 # Adjust layout
 plt.tight_layout()
 
@@ -296,17 +300,17 @@ plt.tight_layout()
 #     }
 # )
 
-# Define CSS styles
-custom_styles = """
-<style>
-    .appview-container .main .block-container {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+# # Define CSS styles
+# custom_styles = """
+# <style>
+#     .appview-container .main .block-container {
+#         padding-top: 1rem;
+#         padding-bottom: 1rem;
+#     }
 
 
-</style>
-"""
+# </style>
+# """
 # Display CSS styles using st.markdown
 st.markdown(custom_styles, unsafe_allow_html=True)
 
