@@ -275,6 +275,13 @@ bars2 = ax.bar(percentages_df_transposed.index, percentages_df_transposed['N'], 
 # Customizing the plot
 ax.set_title('Percentage of Y and N Values')
 ax.set_xlabel('Categories')
+ax.set_xticklabels([
+    f'Within Top {Section_N} (Section)', 
+    f'Within Top {Division_N} (Division)', 
+    f'Within Top {Group_N} (Group)', 
+    f'Within Top {Class_N} (Class)', 
+    f'Within Top {Subclass_N} (Sub-class)'
+], rotation=45, ha='right')
 ax.set_ylabel('Percentage')
 ax.set_ylim(0, 100)
 ax.legend()
@@ -285,34 +292,6 @@ ax.bar_label(bars2, fmt='%.2f%%', label_type='center')
 
 # Adjust layout
 plt.tight_layout()
-
-
-
-# # Set page config
-# st.set_page_config(
-#     page_title='ssicsync', # Set display name of browser tab
-#     page_icon="🔍", # Set display icon of browser tab
-#     layout="wide", # "wide" or "centered"
-#     initial_sidebar_state="expanded",
-#     menu_items={
-#         'About': '''Explore multiclass text classification with DistilBERT on our Streamlit page. 
-#         Discover interactive insights and the power of modern NLP in text categorization!'''
-#     }
-# )
-
-# # Define CSS styles
-# custom_styles = """
-# <style>
-#     .appview-container .main .block-container {
-#         padding-top: 1rem;
-#         padding-bottom: 1rem;
-#     }
-
-
-# </style>
-# """
-# Display CSS styles using st.markdown
-# st.markdown(custom_styles, unsafe_allow_html=True)
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
