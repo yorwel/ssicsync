@@ -312,7 +312,7 @@ plt.tight_layout()
 # </style>
 # """
 # Display CSS styles using st.markdown
-st.markdown(custom_styles, unsafe_allow_html=True)
+# st.markdown(custom_styles, unsafe_allow_html=True)
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
