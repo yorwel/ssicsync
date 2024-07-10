@@ -18,7 +18,7 @@ import seaborn as sns
 
 level_input = st.selectbox(
     "Classification Model Level",
-    ("Section", "Division", "Group", 'Class', 'Subclass'))
+    ("Division", "Group", 'Class', 'Subclass'))
 
 level = level_input if level_input else 'Class'
 ####################################################################################################
@@ -154,7 +154,7 @@ def predict_text(text, top_n=15):
 
 # Validation Data
 
-vdf_filepath = r"dataSources/DoS/data validation.xlsx" 
+vdf_filepath = r"dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx" 
 vdf = pd.read_excel(vdf_filepath, dtype = str)
 
 # Create an empty list to store the predictions
