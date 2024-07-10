@@ -14,7 +14,13 @@ import seaborn as sns
 # 4. 'Class'
 # 5. 'Subclass'
 
-level = 'Class' 
+# level = 'Class' 
+
+level_input = st.selectbox(
+    "How would you like to be contacted?",
+    ("Section", "Division", "Group", 'Class', 'Subclass'))
+
+level = level_input if level_input else 'Class'
 ####################################################################################################
 
 # create ssic denormalized fact table
