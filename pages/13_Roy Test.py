@@ -17,7 +17,7 @@ import seaborn as sns
 # level = 'Class' 
 
 level_input = st.selectbox(
-    "How would you like to be contacted?",
+    "Classification Model Level",
     ("Section", "Division", "Group", 'Class', 'Subclass'))
 
 level = level_input if level_input else 'Class'
