@@ -82,11 +82,6 @@ ssic_df = pd.merge(ssic_df, ssic_2[['Division', 'Division Title']], on='Division
 ssic_df = pd.merge(ssic_df, ssic_3[['Group', 'Group Title']], on='Group', how='left')
 ssic_df = pd.merge(ssic_df, ssic_4[['Class', 'Class Title']], on='Class', how='left')
 
-# prep ssic_n dictionary df_prep
-df_prep = ssic_df[[lvl_train, 'Detailed Definitions']]
-df_prep['encoded_cat'] = df_prep[lvl_train].astype('category').cat.codes
-df_prep = df_prep[[lvl_train, 'encoded_cat']].drop_duplicates()
-
 # mapping
 level_map = {
     'Section': ('Section', ssic_df.iloc[:, [0, 1, 9, 10, 11, 12, 13]].drop_duplicates(), ssic_1.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True), "nusebacra/ssicsync_section_classifier", ssic_1, '0'),
@@ -99,6 +94,13 @@ level_map = {
 # Get the values for a and b based on the lvl_train
 lvl_train, df_streamlit, ssic_n_sl, model, ssic_lvl, oneup_lvl = level_map.get(level, ('default_a', 'default_b', 'default_c', 'default_d', 'default_e', 'default_f'))
 lvl_train_title = lvl_train + " Title"
+
+# prep ssic_n dictionary df_prep
+df_prep = ssic_df[[lvl_train, 'Detailed Definitions']]
+df_prep['encoded_cat'] = df_prep[lvl_train].astype('category').cat.codes
+df_prep = df_prep[[lvl_train, 'encoded_cat']].drop_duplicates()
+
+
 
 # load model directly from huggingface
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
