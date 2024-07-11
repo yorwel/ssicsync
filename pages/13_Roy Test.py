@@ -14,8 +14,6 @@ import seaborn as sns
 # 4. 'Class'
 # 5. 'Subclass'
 
-# level = 'Class' 
-
 level_input = st.selectbox(
     "Classification Model Level",
     ("Division", "Group", 'Class', 'Subclass'))
@@ -23,14 +21,9 @@ level_input = st.selectbox(
 level = level_input if level_input else 'Class'
 ####################################################################################################
 
-# create ssic denormalized fact table
-ssic_detailed_def_filepath = r"dataSources/DoS/ssic2020-detailed-definitions.xlsx"
-ssic_alpha_index_filepath = r"dataSources/DoS/ssic2020-alphabetical-index.xlsx"
-
-df_detailed_def = pd.read_excel(ssic_detailed_def_filepath, skiprows=4)
-df_alpha_index = pd.read_excel(ssic_alpha_index_filepath, dtype=str, skiprows=5)
+df_detailed_def = pd.read_excel(r"dataSources/DoS/ssic2020-detailed-definitions.xlsx", skiprows=4)
+df_alpha_index = pd.read_excel(r"dataSources/DoS/ssic2020-alphabetical-index.xlsx", dtype=str, skiprows=5)
 df_alpha_index = df_alpha_index.drop(df_alpha_index.columns[2], axis=1).dropna().rename(columns={'SSIC 2020': 'SSIC 2020','SSIC 2020 Alphabetical Index Description': 'Detailed Definitions'})
-
 df_concat = pd.concat([df_detailed_def, df_alpha_index])
 
 ####################################################################################################
@@ -41,7 +34,6 @@ df_concat = pd.concat([df_detailed_def, df_alpha_index])
 df_data_dict = df_detailed_def 
 ####################################################################################################
 
-# prep ssic_n tables for joining/merging and reference
 # Section, 1-alpha 
 ssic_1_raw = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 1)].reset_index(drop=True).drop(columns=['Detailed Definitions', 'Cross References', 'Examples of Activities Classified Under this Code']) 
 ssic_1_raw['Groups Classified Under this Code'] = ssic_1_raw['Groups Classified Under this Code'].str.split('\n•')
@@ -98,7 +90,7 @@ level_map = {
 }
 
 # Get the values for a and b based on the lvl_train
-lvl_train, df_streamlit, ssic_n_sl, model, ssic_lvl, oneup_lvl = level_map.get(level, ('default_a', 'default_b', 'default_c', 'default_d', 'default_e', 'default_f'))
+lvl_train, df_streamlit, ssic_n_sl, model, ssic_lvl = level_map.get(level, ('default_a', 'default_b', 'default_c', 'default_d', 'default_e'))
 lvl_train_title = lvl_train + " Title"
 
 # prep ssic_n dictionary df_prep
