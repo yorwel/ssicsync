@@ -264,7 +264,7 @@ import matplotlib.pyplot as plt
 percentages_df_transposed = percentages_df.transpose()
 
 # Plotting
-fig, ax = plt.subplots(figsize=(5, 3))
+fig, ax = plt.subplots(figsize=(10, 6))
 
 # Plotting the bars vertically
 bars1 = ax.bar(percentages_df_transposed.index, percentages_df_transposed['Y'], color='green', label='Y')
