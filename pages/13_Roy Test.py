@@ -264,7 +264,7 @@ import matplotlib.pyplot as plt
 percentages_df_transposed = percentages_df.transpose()
 
 # Plotting
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(5, 3))
 
 # Plotting the bars vertically
 bars1 = ax.bar(percentages_df_transposed.index, percentages_df_transposed['Y'], color='green', label='Y')
@@ -314,5 +314,30 @@ level_input = st.selectbox(
     ("Section", "Division", "Group", "Class", "Subclass")
 )
 
-# Display the selected DataFrame
-st.write(df_display[level_input])
+# Streamlit selectbox for filter criteria
+filter_criteria = st.selectbox(
+    "Filter last column by:",
+    ("Both", "Y", "N")
+)
+
+# Get the selected DataFrame
+selected_df = df_display[level_input]
+
+# Get the name of the last column
+last_column = selected_df.columns[-1]
+
+# Apply filter based on user selection
+if filter_criteria == "Y":
+    filtered_df = selected_df[selected_df[last_column] == "Y"]
+elif filter_criteria == "N":
+    filtered_df = selected_df[selected_df[last_column] == "N"]
+else:
+    filtered_df = selected_df
+
+# Display the filtered DataFrame with text wrapping and no truncation
+st.dataframe(
+    filtered_df.style.set_properties(**{
+        'white-space': 'pre-wrap',
+        'overflow-wrap': 'break-word',
+    })
+)
