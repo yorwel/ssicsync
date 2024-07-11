@@ -16,7 +16,7 @@ import seaborn as sns
 
 level_input = st.selectbox(
     "Classification Model Level",
-    ("Division", "Group", 'Class', 'Subclass'))
+    ("Division", "Group", 'Class', 'SSIC 2020'))
 
 level = level_input if level_input else 'Class'
 ####################################################################################################
