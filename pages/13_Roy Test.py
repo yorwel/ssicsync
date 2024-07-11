@@ -189,11 +189,11 @@ prediction_df['p_Class'] = prediction_df[lvl_train].apply(lambda x: x[:4] if len
 prediction_df['p_Sub-class'] = prediction_df[lvl_train].apply(lambda x: x[:5] if len(x) >= 5 else np.nan)
 prediction_df = prediction_df.fillna('NaN')
 
-Section_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Section', 'm_Section2'])['p_Section'].apply(list).reset_index()
-Division_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Division', 'm_Division2'])['p_Division'].apply(list).reset_index()
-Group_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Group', 'm_Group2'])['p_Group'].apply(list).reset_index()
-Class_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Class', 'm_Class2'])['p_Class'].apply(list).reset_index()
-Subclass_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Sub-class', 'm_Sub-class2'])['p_Sub-class'].apply(list).reset_index()
+Section_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Section', 'm_Section2', 'Notes Page Content', 'Notes Page Content2'])['p_Section'].apply(list).reset_index()
+Division_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Division', 'm_Division2', 'Notes Page Content', 'Notes Page Content2'])['p_Division'].apply(list).reset_index()
+Group_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Group', 'm_Group2', 'Notes Page Content', 'Notes Page Content2'])['p_Group'].apply(list).reset_index()
+Class_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Class', 'm_Class2', 'Notes Page Content', 'Notes Page Content2'])['p_Class'].apply(list).reset_index()
+Subclass_prediction_df = prediction_df.groupby(['entity_name', 'ssic_code', 'ssic_code2', 'm_Sub-class', 'm_Sub-class2', 'Notes Page Content', 'Notes Page Content2'])['p_Sub-class'].apply(list).reset_index()
 
 def check_alpha_in_list(row, N, m1, m2, p):
     # Check if p contains any NaN values
@@ -236,7 +236,7 @@ dfs = [
 # Merge DataFrames on entity_name, ssic_code, ssic_code2
 merged_df = dfs[0]  # Start with the first DataFrame
 for df in dfs[1:]:
-    merged_df = pd.merge(merged_df, df, on=['entity_name', 'ssic_code', 'ssic_code2'], how='outer')
+    merged_df = pd.merge(merged_df, df, on=['entity_name', 'ssic_code', 'ssic_code2', 'Notes Page Content', 'Notes Page Content2'], how='outer')
 
 columns_to_include = [
     'Within Top N (Section)',
@@ -298,3 +298,21 @@ st.sidebar.success("Explore our pages above ☝️")
 
 # Display plot in Streamlit
 st.pyplot(fig)
+
+
+df_display = {
+    "Section": Section_prediction_df,
+    "Division": Division_prediction_df,
+    "Group": Group_prediction_df,
+    "Class": Class_prediction_df,
+    "Subclass": Subclass_prediction_df
+}
+
+# Streamlit selectbox for user input
+level_input = st.selectbox(
+    "Data Inspection",
+    ("Section", "Division", "Group", "Class", "Subclass")
+)
+
+# Display the selected DataFrame
+st.write(df_display[level_input])
