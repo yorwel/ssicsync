@@ -154,7 +154,7 @@ predictions = []
 
 # Iterate over each row of the DataFrame and apply the prediction function
 for idx, row in vdf.iterrows():
-    text = row['Notes Page Content2']
+    text = row['Notes Page Content'] # Specify Notes Page Content2
     result = predict_text(text)
     for pred in result:
         pred.update({
