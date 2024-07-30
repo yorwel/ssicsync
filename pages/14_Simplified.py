@@ -318,26 +318,38 @@ allSSICs_list = coySSIC + ast.literal_eval(topNSSIC_input_list)
 coySSIC_input = []
 predictedSSIC_input = []
 for index, ssic in enumerate(allSSICs_list):
-    ssic = str(int(ssic))
-
-    sectionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Section Title'][0])
-    divisionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Division Title'][0])
-    groupTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Group Title'][0])
-    classTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Class Title'][0])
-    subclassTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['SSIC 2020 Title'][0])
-
-    details_display = {
-        section: sectionTitle_input,
-        division: divisionTitle_input,
-        group: groupTitle_input,
-        Class: classTitle_input,
-        subclass: subclassTitle_input
-    }
-    details_input = details_display[level]
-    if index <= 1:
-        coySSIC_input.append(f"{ssic}: {details_input}")
+    if ssic == 'NULL':
+        pass
     else:
-        predictedSSIC_input.append(f"{ssic}: {details_input}")
+        ssic = str(int(ssic))
+        if level == section:
+            ssicCode = ssic[:1]
+        elif level == division:
+            ssicCode = ssic[:2]
+        elif level == group:
+            ssicCode = ssic[:3]
+        elif level == Class:
+            ssicCode = ssic[:4]
+        elif level == subclass:
+            ssicCode = ssic[:5]
+        sectionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Section Title'][0])
+        divisionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Division Title'][0])
+        groupTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Group Title'][0])
+        classTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Class Title'][0])
+        subclassTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['SSIC 2020 Title'][0])
+
+        details_display = {
+            section: sectionTitle_input,
+            division: divisionTitle_input,
+            group: groupTitle_input,
+            Class: classTitle_input,
+            subclass: subclassTitle_input
+        }
+        details_input = details_display[level]
+        if index <= 1:
+            coySSIC_input.append(f"{ssicCode}: {details_input}")
+        else:
+            predictedSSIC_input.append(f"{ssicCode}: {details_input}")
 
 col1, col2 = st.columns([1,1])
 with col1:
