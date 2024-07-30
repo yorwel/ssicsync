@@ -310,7 +310,7 @@ ssic_df = pd.merge(ssic_df, ssic_4[['Class', 'Class Title']], on='Class', how='l
 # topNSSIC_input_list = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}'][0]
 # topNSSICDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}_desc'][0]
 
-if ssic2_input == np.NaN:
+if pd.isna(ssic2_input):
     ssic2_input = 'NULL'
 coySSIC = [ssic_input, ssic2_input]
 allSSICs_list = coySSIC + ast.literal_eval(topNSSIC_input_list)
