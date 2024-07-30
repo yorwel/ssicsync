@@ -368,9 +368,9 @@ for index, ssic in enumerate(allSSICs_list):
         }
         details_input = details_display[level]
         if index <= 1:
-            coySSIC_input.append(f"{ssicCode}: {details_input}")
+            coySSIC_input.append(f"**{ssicCode}**: {details_input}")
         else:
-            predictedSSIC_input.append(f"{ssicCode}: {details_input}")
+            predictedSSIC_input.append(f"**{ssicCode}**: {details_input}")
 
 col1, col2 = st.columns([1,1])
 with col1:
