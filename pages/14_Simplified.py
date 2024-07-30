@@ -221,8 +221,6 @@ def capitalize_sentence(text):
     # Join the sentences back into a single string
     return '. '.join(sentences)
 
-companies_input = 'ABUNDANTE LIMITED'
-
 content_input = capitalize_sentence(modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)['Notes Page Content'][0])
 
 ssic_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code[0]
