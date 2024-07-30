@@ -1,4 +1,5 @@
 import streamlit as st
+import ast
 import numpy as np
 import pandas as pd
 from sklearn import datasets
@@ -11,7 +12,7 @@ pd.set_option('display.max_columns', None)
 
 # hard-coded values
 modelChoice = 'fb_bart_tfidf'
-vdf_filepath = "./dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx"
+# vdf_filepath = "./dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx"
 topN = 3
 section = 'Section'
 division = 'Division'
@@ -157,7 +158,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 bars = ax.barh(categories, values, color='skyblue')
 # ax.set_xlabel('Percentage')
 # ax.set_ylabel('Categories')
-ax.set_title('Accuracy')
+ax.set_title('Accuracy',  fontweight='bold')
 ax.set_xlim(0, 100)  # Assuming the percentage is between 0 and 100
 
 # Remove right and top spines
@@ -187,7 +188,7 @@ st.pyplot(fig)
 
 # Streamlit selectbox for user input
 level_input = st.selectbox(
-    "Level of correct classification",
+    "Level of Classification:",
     (section, division, group, Class, subclass)
 )
 level = level_input if level_input else section
@@ -235,13 +236,126 @@ st.write(companies_input)
 st.subheader('Company Description:')
 st.write(content_input)
 
+###################
+
+# TO DELETE EVENTUALLY
+
+df_detailed_def = pd.read_excel("./dataSources/DoS/ssic2020-detailed-definitions.xlsx", skiprows=4)
+df_alpha_index = pd.read_excel("./dataSources/DoS/ssic2020-alphabetical-index.xlsx", dtype=str, skiprows=5)
+df_alpha_index = df_alpha_index.drop(df_alpha_index.columns[2], axis=1).dropna().rename(columns={'SSIC 2020': 'SSIC 2020','SSIC 2020 Alphabetical Index Description': 'Detailed Definitions'})
+
+df_concat = pd.concat([df_detailed_def, df_alpha_index])
+
+####################################################################################################
+### Select which fact table to train/transform
+# - df_detailed_def
+# - df_concat       (concat of df_detailed_def and df_alpha_index)
+
+df_data_dict = df_detailed_def 
+####################################################################################################
+
+# prep ssic_n tables for joining/merging and reference
+# Section, 1-alpha 
+ssic_1_raw = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 1)].reset_index(drop=True).drop(columns=['Detailed Definitions', 'Cross References', 'Examples of Activities Classified Under this Code']) 
+ssic_1_raw['Groups Classified Under this Code'] = ssic_1_raw['Groups Classified Under this Code'].str.split('\n•')
+ssic_1 = ssic_1_raw.explode('Groups Classified Under this Code').reset_index(drop=True)
+ssic_1['Groups Classified Under this Code'] = ssic_1['Groups Classified Under this Code'].str.replace('•', '')
+ssic_1['Section, 2 digit code'] = ssic_1['Groups Classified Under this Code'].str[0:2]
+ssic_1 = ssic_1.rename(columns={'SSIC 2020': 'Section','SSIC 2020 Title': 'Section Title'})
+
+# Division, 2-digit
+ssic_2_raw = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 2)].reset_index(drop=True).drop(columns=['Detailed Definitions', 'Cross References', 'Examples of Activities Classified Under this Code'])
+ssic_2_raw['Groups Classified Under this Code'] = ssic_2_raw['Groups Classified Under this Code'].str.split('\n•')
+ssic_2 = ssic_2_raw.explode('Groups Classified Under this Code').reset_index(drop=True)
+ssic_2['Groups Classified Under this Code'] = ssic_2['Groups Classified Under this Code'].str.replace('•', '')
+ssic_2 = ssic_2.rename(columns={'SSIC 2020': 'Division','SSIC 2020 Title': 'Division Title'}).drop(columns=['Groups Classified Under this Code']).drop_duplicates()
+
+# Group, 3-digit 
+ssic_3_raw = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 3)].reset_index(drop=True).drop(columns=['Detailed Definitions', 'Cross References', 'Examples of Activities Classified Under this Code'])
+ssic_3_raw['Groups Classified Under this Code'] = ssic_3_raw['Groups Classified Under this Code'].str.split('\n•')
+ssic_3 = ssic_3_raw.explode('Groups Classified Under this Code').reset_index(drop=True)
+ssic_3['Groups Classified Under this Code'] = ssic_3['Groups Classified Under this Code'].str.replace('•', '')
+ssic_3 = ssic_3.rename(columns={'SSIC 2020': 'Group','SSIC 2020 Title': 'Group Title'}).drop(columns=['Groups Classified Under this Code']).drop_duplicates()
+
+# Class, 4-digit
+ssic_4_raw = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 4)].reset_index(drop=True).drop(columns=['Detailed Definitions', 'Cross References', 'Examples of Activities Classified Under this Code'])
+ssic_4_raw['Groups Classified Under this Code'] = ssic_4_raw['Groups Classified Under this Code'].str.split('\n•')
+ssic_4 = ssic_4_raw.explode('Groups Classified Under this Code').reset_index(drop=True)
+ssic_4['Groups Classified Under this Code'] = ssic_4['Groups Classified Under this Code'].str.replace('•', '')
+ssic_4 = ssic_4.rename(columns={'SSIC 2020': 'Class','SSIC 2020 Title': 'Class Title'}).drop(columns=['Groups Classified Under this Code']).drop_duplicates()
+
+# Sub-class, 5-digit
+ssic_5 = df_data_dict[df_data_dict['SSIC 2020'].apply(lambda x: len(str(x)) == 5)].reset_index(drop=True).drop(columns=['Groups Classified Under this Code'])
+ssic_5.replace('<Blank>', '', inplace=True)
+ssic_5.replace('NaN', '', inplace=True)
+
+# prep join columns
+ssic_5['Section, 2 digit code'] = ssic_5['SSIC 2020'].astype(str).str[:2]
+ssic_5['Division'] = ssic_5['SSIC 2020'].astype(str).str[:2]
+ssic_5['Group'] = ssic_5['SSIC 2020'].astype(str).str[:3]
+ssic_5['Class'] = ssic_5['SSIC 2020'].astype(str).str[:4]
+
+# join ssic_n Hierarhical Layer Tables (Section, Division, Group, Class, Sub-Class)
+ssic_df = pd.merge(ssic_5, ssic_1[['Section', 'Section Title', 'Section, 2 digit code']], on='Section, 2 digit code', how='left')
+ssic_df = pd.merge(ssic_df, ssic_2[['Division', 'Division Title']], on='Division', how='left')
+ssic_df = pd.merge(ssic_df, ssic_3[['Group', 'Group Title']], on='Group', how='left')
+ssic_df = pd.merge(ssic_df, ssic_4[['Class', 'Class Title']], on='Class', how='left')
+
+###################
+
+# ssic_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code[0]
+# ssic2_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code2[0]
+# ssicDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)['ssic_code&title'][0]
+
+# topNSSIC_input_list = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}'][0]
+# topNSSICDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}_desc'][0]
+
+if ssic2_input == np.NaN:
+    ssic2_input = 'NULL'
+coySSIC = [ssic_input, ssic2_input]
+allSSICs_list = coySSIC + ast.literal_eval(topNSSIC_input_list)
+
+coySSIC_input = []
+predictedSSIC_input = []
+for index, ssic in enumerate(allSSICs_list):
+    ssic = str(int(ssic))
+
+    sectionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Section Title'][0])
+    divisionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Division Title'][0])
+    groupTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Group Title'][0])
+    classTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Class Title'][0])
+    subclassTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['SSIC 2020 Title'][0])
+
+    details_display = {
+        section: sectionTitle_input,
+        division: divisionTitle_input,
+        group: groupTitle_input,
+        Class: classTitle_input,
+        subclass: subclassTitle_input
+    }
+    details_input = details_display[level]
+    if index <= 1:
+        coySSIC_input.append(f"{ssic}: {details_input}")
+    else:
+        predictedSSIC_input.append(f"{ssic}: {details_input}")
+
 col1, col2 = st.columns([1,1])
 with col1:
     st.subheader('Company SSICs & Descriptions:')
-    st.write(ssicDesc_input)
+    coySSICstring_input = ',\n'.join(coySSIC_input)
+    st.write(coySSICstring_input)
 with col2:
     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
-    st.write(topNSSICDesc_input)
+    predictedSSICstring_input = ',\n'.join(predictedSSIC_input)
+    st.write(predictedSSICstring_input)
+
+# col1, col2 = st.columns([1,1])
+# with col1:
+#     st.subheader('Company SSICs & Descriptions:')
+#     st.write(ssicDesc_input)
+# with col2:
+#     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
+#     st.write(topNSSICDesc_input)
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
