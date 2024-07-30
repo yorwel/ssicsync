@@ -373,11 +373,11 @@ for index, ssic in enumerate(allSSICs_list):
 col1, col2 = st.columns([1,1])
 with col1:
     st.subheader('Company SSICs & Descriptions:')
-    coySSICstring_input = ',  \n'.join(coySSIC_input)
+    coySSICstring_input = '  \n'.join(coySSIC_input)
     st.write(coySSICstring_input)
 with col2:
     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
-    predictedSSICstring_input = ',  \n'.join(predictedSSIC_input)
+    predictedSSICstring_input = '  \n'.join(predictedSSIC_input)
     st.write(predictedSSICstring_input)
 
 # col1, col2 = st.columns([1,1])
