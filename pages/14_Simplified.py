@@ -11,7 +11,7 @@ pd.set_option('display.max_columns', None)
 
 # hard-coded values
 modelChoice = 'fb_bart_tfidf'
-vdf_filepath = r"dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx" 
+vdf_filepath = "./dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx"
 topN = 3
 section = 'Section'
 division = 'Division'
@@ -19,8 +19,8 @@ group = 'Group'
 Class = 'Class'
 subclass = 'Sub-class'
 level = subclass
-DoS = pd.read_csv("C:/Users/Michael/Documents/GitHub/ssicsync/dataSources/ScrapedOutputFiles/(Roy) List of 90 Coy and SSIC.csv")
-modelOutputs = pd.read_excel("C:/Users/Michael/Documents/GitHub/ssicsync/vdf.xlsx")
+DoS = pd.read_csv("./dataSources/ScrapedOutputFiles/(Roy) List of 90 Coy and SSIC.csv")
+modelOutputs = pd.read_excel("./vdf.xlsx")
 
 # df_detailed_def = pd.read_excel(r"dataSources/DoS/ssic2020-detailed-definitions.xlsx", skiprows=4)
 # df_alpha_index = pd.read_excel(r"dataSources/DoS/ssic2020-alphabetical-index.xlsx", dtype=str, skiprows=5)
@@ -242,8 +242,6 @@ with col1:
 with col2:
     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
     st.text(topNSSICDesc_input)
-
-# import pdb;pdb.set_trace()
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
