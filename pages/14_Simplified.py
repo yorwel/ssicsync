@@ -231,9 +231,9 @@ topNSSICDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].r
 
 st.header('Company SSIC Details')
 st.subheader('Company Name:')
-st.text(companies_input)
+st.write(companies_input)
 st.subheader('Company Description:')
-st.text(content_input)
+st.write(content_input)
 
 col1, col2 = st.columns([1,1])
 with col1:
@@ -241,7 +241,7 @@ with col1:
     st.write(ssicDesc_input)
 with col2:
     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
-    st.text(topNSSICDesc_input)
+    st.write(topNSSICDesc_input)
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
