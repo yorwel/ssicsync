@@ -221,6 +221,8 @@ def capitalize_sentence(text):
     # Join the sentences back into a single string
     return '. '.join(sentences)
 
+companies_input = 'ABUNDANTE LIMITED'
+
 content_input = capitalize_sentence(modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)['Notes Page Content'][0])
 
 ssic_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code[0]
@@ -321,7 +323,10 @@ for index, ssic in enumerate(allSSICs_list):
     if ssic == 'NULL':
         pass
     else:
-        ssic = str(int(ssic))
+        if isinstance(ssic, str):
+            ssic = ssic
+        else:
+            ssic = str(int(ssic))
         if level == section:
             ssicCode = ssic[:1]
         elif level == division:
@@ -332,11 +337,27 @@ for index, ssic in enumerate(allSSICs_list):
             ssicCode = ssic[:4]
         elif level == subclass:
             ssicCode = ssic[:5]
-        sectionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Section Title'][0])
-        divisionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Division Title'][0])
-        groupTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Group Title'][0])
-        classTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Class Title'][0])
-        subclassTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['SSIC 2020 Title'][0])
+
+        try:
+            sectionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Section Title'][0])
+        except:
+            sectionTitle_input = 'NULL'
+        try:
+            divisionTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Division Title'][0])
+        except:
+            divisionTitle_input = 'NULL'
+        try:
+            groupTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Group Title'][0])
+        except:
+            groupTitle_input = 'NULL'
+        try:
+            classTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['Class Title'][0])
+        except:
+            classTitle_input = 'NULL'
+        try:
+            subclassTitle_input = capitalize_sentence(ssic_df[ssic_df['SSIC 2020'] == ssic].reset_index(drop = True)['SSIC 2020 Title'][0])
+        except:
+            subclassTitle_input = 'NULL'
 
         details_display = {
             section: sectionTitle_input,
