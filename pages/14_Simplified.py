@@ -19,7 +19,7 @@ division = 'Division'
 group = 'Group'
 Class = 'Class'
 subclass = 'Sub-class'
-level = subclass
+# level = subclass
 DoS = pd.read_csv("./dataSources/ScrapedOutputFiles/(Roy) List of 90 Coy and SSIC.csv")
 modelOutputs = pd.read_excel("./vdf.xlsx")
 
@@ -375,11 +375,11 @@ for index, ssic in enumerate(allSSICs_list):
 col1, col2 = st.columns([1,1])
 with col1:
     st.subheader('Company SSICs & Descriptions:')
-    coySSICstring_input = ',\n'.join(coySSIC_input)
+    coySSICstring_input = ',  \n'.join(coySSIC_input)
     st.write(coySSICstring_input)
 with col2:
     st.subheader(f'Top {topN} Predicted SSICs & Descriptions:')
-    predictedSSICstring_input = ',\n'.join(predictedSSIC_input)
+    predictedSSICstring_input = ',  \n'.join(predictedSSIC_input)
     st.write(predictedSSICstring_input)
 
 # col1, col2 = st.columns([1,1])
