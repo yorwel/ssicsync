@@ -258,6 +258,13 @@ with col2:
     predictedSSICstring_input = '  \n'.join(predictedSSIC_input)
     st.write(predictedSSICstring_input)
 
+classification = correctWrongClassification_df[correctWrongClassification_df['Company Name'] == companies_input].reset_index(drop = True)[f'Within Top {topN}'][0]
+if classification == 'No':
+    classification = 'not within'
+else:
+    classification = 'within'
+st.write(f"{companies_input} SSIC Code(s) is **{classification}** its predicted top {topN} SSIC Codes.")
+
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
 
