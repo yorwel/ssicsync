@@ -21,7 +21,7 @@ Class = 'Class'
 subclass = 'Sub-class'
 # level = subclass
 DoS = pd.read_csv("./dataSources/ScrapedOutputFiles/(Roy) List of 90 Coy and SSIC.csv")
-modelOutputs = pd.read_excel("./vdf.xlsx")
+modelOutputs = pd.read_excel("./vdf.xlsx",  dtype={'ssic_code': str, 'ssic_code2': str})
 
 # functions
 def capitalize_sentence(text):
@@ -187,7 +187,8 @@ ssic_df = pd.merge(ssic_df, ssic_3[['Group', 'Group Title']], on='Group', how='l
 ssic_df = pd.merge(ssic_df, ssic_4[['Class', 'Class Title']], on='Class', how='left')
 
 ###############################################################################################
-
+if pd.isna(ssic_input):
+    ssic_input = 'NULL'
 if pd.isna(ssic2_input):
     ssic2_input = 'NULL'
 coySSIC = [ssic_input, ssic2_input]
