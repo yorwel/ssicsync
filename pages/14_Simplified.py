@@ -91,6 +91,10 @@ level = level_input if level_input else section
 levelDisplay_df = df_display[level]
 correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.notnull()]
 
+correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
+correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
+correctWrongClassification_df.rename(columns = {'entity_name': 'Company Name', 'classification': f'Within Top {topN}'}, inplace = True)
+
 # Display df with text wrapping and no truncation
 st.dataframe(
     correctWrongClassification_df.style.set_properties(**{
@@ -99,8 +103,7 @@ st.dataframe(
     })
 )
 
-companies_tuple = tuple(correctWrongClassification_df.entity_name)
-
+companies_tuple = tuple(correctWrongClassification_df['Company Name'])
 companies_input = st.selectbox(
     "List of Companies",
     companies_tuple)
