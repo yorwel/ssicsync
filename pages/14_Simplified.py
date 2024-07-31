@@ -54,7 +54,10 @@ for cat in categories:
 
 for level in prop_dict.values():
     values.append(round(level*100, 1))
-categories = [section, division, group, Class, subclass]
+# categories = [section, division, group, Class, subclass]
+
+categories = [subclass, Class, group, division, section]
+values.reverse()
 
 # Create horizontal bar chart
 fig, ax = plt.subplots(figsize=(10, 6))
