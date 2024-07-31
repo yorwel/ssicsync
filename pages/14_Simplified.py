@@ -61,7 +61,8 @@ fig, ax = plt.subplots(figsize=(10, 6))
 bars = ax.barh(categories, values, color='skyblue')
 # ax.set_xlabel('Percentage')
 # ax.set_ylabel('Categories')
-ax.set_title('Accuracy',  fontweight='bold')
+ax.set_title('Classification Accuracy',  fontweight='bold')
+fig.text(0.5, 0.92, f'Company SSIC(s) Within Top {topN} of Predicted SSICs', ha='center', fontsize=12)
 ax.set_xlim(0, 100)  # Assuming the percentage is between 0 and 100
 
 # Remove right and top spines
