@@ -265,14 +265,14 @@ if classification == 'No':
 else:
     classification = 'within'
 
-if len(coySSIC_input) == 2:
-    code = 'Codes'
-    grammar = 'are'
+if len(coySSIC_input) == 0:
+    st.wrte(f"{companies_input} does not have an existing SSIC Code.")
 else:
-    code = 'Code'
-    grammar = 'is'
-
-st.write(f"{companies_input} SSIC {code} {grammar} **{classification}** its predicted top {topN} SSIC Codes.")
+    if len(coySSIC_input) == 1:
+        grammar = 'Code is'
+    else:
+        grammar = 'Codes are'
+    st.write(f"{companies_input} SSIC {grammar} **{classification}** its predicted top {topN} SSIC Codes.")
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
