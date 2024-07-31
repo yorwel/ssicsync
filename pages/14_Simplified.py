@@ -94,8 +94,8 @@ correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.n
 
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
-correctWrongClassification_df.rename(columns = {'entity_name': 'Company Names', 'classification': f'Within Top {topN}'}, inplace = True)
-correctWrongClassification_df['Company Name'] = correctWrongClassification_df['Company Names'].str.rstrip('.') # TODO
+correctWrongClassification_df.rename(columns = {'classification': f'Within Top {topN}'}, inplace = True)
+correctWrongClassification_df['Company Name'] = correctWrongClassification_df['entity_name'].str.rstrip('.') # TODO
 
 # Display df with text wrapping and no truncation
 st.dataframe(
@@ -105,19 +105,19 @@ st.dataframe(
     })
 )
 
-companies_tuple = tuple(correctWrongClassification_df['Company Names'])
+companies_tuple = tuple(correctWrongClassification_df['Company Name'])
 companies_input = st.selectbox(
     "List of Companies",
     companies_tuple)
 
-content_input = capitalize_sentence(modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)['Notes Page Content'][0])
+content_input = capitalize_sentence(modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)['Notes Page Content'][0])
 
-ssic_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code[0]
-ssic2_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True).ssic_code2[0]
-ssicDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)['ssic_code&title'][0]
+ssic_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True).ssic_code[0]
+ssic2_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True).ssic_code2[0]
+ssicDesc_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)['ssic_code&title'][0]
 
-topNSSIC_input_list = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}'][0]
-topNSSICDesc_input = modelOutputs[modelOutputs.entity_name == companies_input].reset_index(drop = True)[f'p_{modelChoice}_desc'][0]
+topNSSIC_input_list = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)[f'p_{modelChoice}'][0]
+topNSSICDesc_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)[f'p_{modelChoice}_desc'][0]
 
 st.header('Company SSIC Details')
 st.subheader('Company Name:')
