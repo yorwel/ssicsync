@@ -54,7 +54,6 @@ for cat in categories:
 
 for level in prop_dict.values():
     values.append(round(level*100, 1))
-# categories = [section, division, group, Class, subclass]
 
 categories = [subclass, Class, group, division, section]
 values.reverse()
