@@ -265,11 +265,13 @@ else:
     classification = 'within'
 
 if len(coySSIC_input) == 2:
+    code = 'Codes'
     grammar = 'are'
 else:
+    code = 'Code'
     grammar = 'is'
 
-st.write(f"{companies_input} SSIC Code(s) {grammar} **{classification}** its predicted top {topN} SSIC Codes.")
+st.write(f"{companies_input} SSIC {code} {grammar} **{classification}** its predicted top {topN} SSIC Codes.")
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
