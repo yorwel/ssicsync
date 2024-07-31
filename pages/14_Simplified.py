@@ -95,6 +95,7 @@ correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.n
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
 correctWrongClassification_df.rename(columns = {'entity_name': 'Company Name', 'classification': f'Within Top {topN}'}, inplace = True)
+correctWrongClassification_df['Company Name'] = correctWrongClassification_df['Company Name'].str.rstrip('.')
 
 # Display df with text wrapping and no truncation
 st.dataframe(
