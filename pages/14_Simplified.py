@@ -266,7 +266,7 @@ else:
     classification = 'within'
 
 if len(coySSIC_input) == 0:
-    st.wrte(f"{companies_input} does not have an existing SSIC Code.")
+    st.write(f"{companies_input} does not have an existing SSIC Code.")
 else:
     if len(coySSIC_input) == 1:
         grammar = 'Code is'
