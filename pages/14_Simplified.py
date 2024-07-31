@@ -263,7 +263,13 @@ if classification == 'No':
     classification = 'not within'
 else:
     classification = 'within'
-st.write(f"{companies_input} SSIC Code(s) is **{classification}** its predicted top {topN} SSIC Codes.")
+
+if len(coySSIC_input) == 2:
+    grammar = 'are'
+else:
+    grammar = 'is'
+
+st.write(f"{companies_input} SSIC Code(s) {grammar} **{classification}** its predicted top {topN} SSIC Codes.")
 
 # Visual Effects ### - https://docs.streamlit.io/develop/api-reference/status
 st.balloons() 
