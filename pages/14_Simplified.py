@@ -19,7 +19,6 @@ division = 'Division'
 group = 'Group'
 Class = 'Class'
 subclass = 'Sub-class'
-# level = subclass
 DoS = pd.read_csv("./dataSources/ScrapedOutputFiles/(Roy) List of 90 Coy and SSIC.csv")
 modelOutputs = pd.read_excel("./vdf.xlsx",  dtype={'ssic_code': str, 'ssic_code2': str})
 
@@ -92,13 +91,13 @@ level_input = st.selectbox(
 level = level_input if level_input else section
 
 levelDisplay_df = df_display[level]
-correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.notnull()]
+correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.notnull()] # TODO No SSIC prediction because no company description!
 
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Null', 'classification'] = 'NA'
 correctWrongClassification_df.rename(columns = {'classification': f'Within Top {topN}'}, inplace = True)
-correctWrongClassification_df['Company Name'] = correctWrongClassification_df['entity_name'].str.rstrip('.') # TODO
+correctWrongClassification_df['Company Name'] = correctWrongClassification_df['entity_name'].str.rstrip('.')
 
 # Display df with text wrapping and no truncation
 st.dataframe(
