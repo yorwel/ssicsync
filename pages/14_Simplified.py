@@ -62,7 +62,7 @@ bars = ax.barh(categories, values, color='skyblue')
 # ax.set_xlabel('Percentage')
 # ax.set_ylabel('Categories')
 ax.set_title('Classification Accuracy',  fontweight='bold')
-fig.text(0.525, 0.92, f'Company SSIC(s) Within Top {topN} of Predicted SSICs', ha='center', fontsize=10)
+fig.text(0.53, 0.92, f'Company SSIC(s) Within Top {topN} Predicted SSICs', ha='center', fontsize=10)
 ax.set_xlim(0, 100)  # Assuming the percentage is between 0 and 100
 
 # Remove right and top spines
