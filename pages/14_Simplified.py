@@ -94,18 +94,18 @@ correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.n
 
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
-correctWrongClassification_df.rename(columns = {'entity_name': 'Company Name', 'classification': f'Within Top {topN}'}, inplace = True)
-correctWrongClassification_df['Company Name'] = correctWrongClassification_df['Company Name'].str.rstrip('.')
+correctWrongClassification_df.rename(columns = {'entity_name': 'Company Names', 'classification': f'Within Top {topN}'}, inplace = True)
+correctWrongClassification_df['Company Name'] = correctWrongClassification_df['Company Names'].str.rstrip('.') # TODO
 
 # Display df with text wrapping and no truncation
 st.dataframe(
-    correctWrongClassification_df.style.set_properties(**{
+    correctWrongClassification_df[['Company Name', f'Within Top {topN}']].style.set_properties(**{
         'white-space': 'pre-wrap',
         'overflow-wrap': 'break-word',
     })
 )
 
-companies_tuple = tuple(correctWrongClassification_df['Company Name'])
+companies_tuple = tuple(correctWrongClassification_df['Company Names'])
 companies_input = st.selectbox(
     "List of Companies",
     companies_tuple)
