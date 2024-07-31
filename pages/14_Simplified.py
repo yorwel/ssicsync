@@ -41,7 +41,7 @@ DoS = pd.DataFrame(uenEntity_dict)
 uenEntity_dict = dict(zip(DoS['UEN'], DoS['entity_name']))
 
 for cat in categories:
-    prop_dict[cat] = modelOutputs[modelOutputs[f'p_{modelChoice}_{cat}_check'] == 'Y'].shape[0]/modelOutputs.shape[0]
+    prop_dict[cat] = modelOutputs[modelOutputs[f'p_{modelChoice}_{cat}_check'] == 'Y'].shape[0]/modelOutputs[modelOutputs[f'p_{modelChoice}_{cat}_check'] != 'Null'].shape[0]
     modelOutputs['entity_name'] = modelOutputs['UEN Number'].map(uenEntity_dict)
     if cat == 'Subclass':
         cat_key = subclass
