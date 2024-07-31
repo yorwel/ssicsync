@@ -12,7 +12,6 @@ pd.set_option('display.max_columns', None)
 
 # hard-coded values
 modelChoice = 'fb_bart_tfidf'
-# vdf_filepath = "./dataSources/ScrapedOutputFiles/(Roy) data validation.xlsx"
 topN = 3
 section = 'Section'
 division = 'Division'
@@ -91,7 +90,7 @@ level_input = st.selectbox(
 level = level_input if level_input else section
 
 levelDisplay_df = df_display[level]
-correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.notnull()] # TODO No SSIC prediction because no company description!
+correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.notnull()] # TODO Missing SSIC predictions because no company descriptions!
 
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
@@ -113,13 +112,9 @@ companies_input = st.selectbox(
     companies_tuple)
 
 content_input = capitalize_sentence(modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)['Notes Page Content'][0])
-
 ssic_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True).ssic_code[0]
 ssic2_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True).ssic_code2[0]
-ssicDesc_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)['ssic_code&title'][0]
-
 topNSSIC_input_list = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)[f'p_{modelChoice}'][0]
-topNSSICDesc_input = modelOutputs[modelOutputs.entity_name.str.rstrip('.') == companies_input].reset_index(drop = True)[f'p_{modelChoice}_desc'][0]
 
 st.header('Company SSIC Details')
 st.subheader('Company Name:')
@@ -187,6 +182,7 @@ ssic_df = pd.merge(ssic_df, ssic_3[['Group', 'Group Title']], on='Group', how='l
 ssic_df = pd.merge(ssic_df, ssic_4[['Class', 'Class Title']], on='Class', how='left')
 
 ###############################################################################################
+
 if pd.isna(ssic_input):
     ssic_input = 'NULL'
 if pd.isna(ssic2_input):
