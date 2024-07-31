@@ -96,7 +96,7 @@ correctWrongClassification_df = levelDisplay_df[levelDisplay_df.classification.n
 
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'N', 'classification'] = 'No'
 correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Y', 'classification'] = 'Yes'
-correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'NULL', 'classification'] = 'NA'
+correctWrongClassification_df.loc[correctWrongClassification_df.classification == 'Null', 'classification'] = 'NA'
 correctWrongClassification_df.rename(columns = {'classification': f'Within Top {topN}'}, inplace = True)
 correctWrongClassification_df['Company Name'] = correctWrongClassification_df['entity_name'].str.rstrip('.') # TODO
 
