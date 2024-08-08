@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
 
+# hard-coded values
+topN = 3
+
 # Set page config
 apptitle = 'DSSI Workshop - SSIC Division Classification'
 

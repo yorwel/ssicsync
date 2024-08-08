@@ -5,6 +5,14 @@ from sklearn import datasets
 import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
+from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
+
+# hard-coded values
+topN = 3
+# ssic_detailed_def_filepath = "dataSources/DoS/ssic2020-detailed-definitions.xlsx"
+# ssic_alpha_index_filepath = "dataSources/DoS/ssic2020-alphabetical-index.xlsx"
+ssic_detailed_def_filepath = "C:/Users/Michael/Documents/GitHub/ssicsync/dataSources/DoS/ssic2020-detailed-definitions.xlsx"
+ssic_alpha_index_filepath = "C:/Users/Michael/Documents/GitHub/ssicsync/dataSources/DoS/ssic2020-alphabetical-index.xlsx"
 
 # Set page config
 apptitle = 'DSSI Workshop - SSIC Division Classification'
@@ -19,18 +27,11 @@ st.balloons()
 
 
 # load model directly from huggingface
-from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 tokenizer = AutoTokenizer.from_pretrained("nusebacra/ssicsync_section_classifier")
 model = TFAutoModelForSequenceClassification.from_pretrained("nusebacra/ssicsync_section_classifier")
 
-
-
 # create ssic denormalized fact table
-ssic_detailed_def_filepath = "dataSources/DoS/ssic2020-detailed-definitions.xlsx"
-ssic_alpha_index_filepath = "dataSources/DoS/ssic2020-alphabetical-index.xlsx"
-
 df_detailed_def = pd.read_excel(ssic_detailed_def_filepath, skiprows=4)
-
 df_alpha_index = pd.read_excel(ssic_alpha_index_filepath, dtype=str, skiprows=5)
 df_alpha_index = df_alpha_index.drop(df_alpha_index.columns[2], axis=1).dropna().rename(columns={'SSIC 2020': 'SSIC 2020','SSIC 2020 Alphabetical Index Description': 'Detailed Definitions'})
 
@@ -175,7 +176,7 @@ with col2:
     """)
 
     # User input for text description
-    user_input = st.text_area("Enter Business Description:", "")
+    user_input = st.text_area("Enter Business Description:", "Banking, insurance, investment services.")
 
     if user_input:
         # Process the input text using the model
@@ -226,7 +227,11 @@ with col2:
         merged_df2 = sorted_output_df.merge(merged_df, on='encoded_cat', how='left')
 
         # Display the result as a table
-        st.subheader("Prediction Results")
-        st.table(merged_df2[['Value', lvl_train, lvl_train_title]].head(5))
+        st.subheader(f"Top {topN} Predicted SSIC & Descriptions:")
 
+        for result in range(0,topN):
 
+            lvl = merged_df2[['Value', lvl_train, lvl_train_title]].reset_index(drop = True)[lvl_train][result]
+            lvl_title = merged_df2[['Value', lvl_train, lvl_train_title]].reset_index(drop = True)[lvl_train_title][result].capitalize()
+
+            st.write(f"**{lvl}**: {lvl_title}")

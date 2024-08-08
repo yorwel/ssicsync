@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
 
+# hard-coded values
+topN = 3
+
 # Set page config
 apptitle = 'DSSI Workshop - SSIC Division Classification'
 
@@ -20,8 +23,8 @@ st.balloons()
 
 # load model directly from huggingface
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
-tokenizer = AutoTokenizer.from_pretrained("nusebacra/ssicsync_class_classifier")
-model = TFAutoModelForSequenceClassification.from_pretrained("nusebacra/ssicsync_class_classifier")
+tokenizer = AutoTokenizer.from_pretrained("nusebacra/ssicsync_subclass_classifier")
+model = TFAutoModelForSequenceClassification.from_pretrained("nusebacra/ssicsync_subclass_classifier")
 
 
 
@@ -48,7 +51,7 @@ df_data_dict = df_detailed_def
 # - 'Group'
 # - 'Class'
 # - 'Subclass'
-level = 'Class' 
+level = 'Subclass' 
 ####################################################################################################
 
 # prep ssic_n tables for joining/merging and reference
@@ -105,7 +108,7 @@ level_map = {
     'Division': ('Division', ssic_df.iloc[:, [0, 1, 6, 10, 11, 12, 13]].drop_duplicates(), ssic_2.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True)),
     'Group': ('Group', ssic_df.iloc[:, [0, 1, 7, 10, 11, 12, 13]].drop_duplicates(), ssic_3.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True)),
     'Class': ('Class', ssic_df.iloc[:, [0, 1, 8, 10, 11, 12, 13]].drop_duplicates(), ssic_4.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True)),
-    'Subclass': ('Subclass', ssic_df.iloc[:, [0, 1, 9, 10, 11, 12, 13]].drop_duplicates(), ssic_5.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True))
+    'Subclass': ('SSIC 2020', ssic_df.iloc[:, [0, 1, 9, 10, 11, 12, 13]].drop_duplicates(), ssic_5.iloc[:, [0, 1]].drop_duplicates().reset_index(drop=True))
 }
 
 # Get the values for a and b based on the lvl_train
@@ -151,12 +154,12 @@ with col1:
 
 with col2:
     # page subheader
-    st.subheader("Classify Business Descriptions into 382 Class Categories")
+    st.subheader("Classify Business Descriptions into 1,032 Subclass Categories")
 
     # Add some text explaining the app
     st.write("""
     Welcome to the Business Description Classifier! This application utilizes a multiclass text classification model 
-    to categorize business descriptions into one of 382 Class categories. Simply input your business description, 
+    to categorize business descriptions into one of 1,032 Subclass categories. Simply input your business description, 
     and the model will analyze the text and provide a list predicted categories.
 
     ##### How to Use
@@ -166,7 +169,7 @@ with col2:
 
     ##### About the Model
     This model has been trained on a diverse dataset of business descriptions and is capable of understanding and 
-    classifying a wide range of business activities. The 382 Class categories cover various industry sectors, 
+    classifying a wide range of business activities. The 1,032 Subclass categories cover various industry sectors, 
     providing accurate and meaningful classifications for your business needs.
 
     ##### Examples
